@@ -13,16 +13,19 @@ jobs:
     if: ${{ env.LINT_FILE_ALLOW_FAILURE == 'true' && env.LINT_FILE == 'true' || env.LINT_FILE == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
+      LINT_FILE_IMAGE: ${{ secrets.LINT_FILE_IMAGE }}
+      LINT_FILE_ALLOW_FAILURE: ${{ secrets.LINT_FILE_ALLOW_FAILURE }}
+      LINT_FILE: ${{ secrets.LINT_FILE }}
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ secrets.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
       DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
       DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
+      LINT_DOCKER: true
+      LINT_VALE: true
       TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
+      DOCKER_TEST_VERSION_DIND: false
     steps:
     - uses: actions/checkout@v4.1.0
       with:
@@ -39,16 +42,19 @@ jobs:
     if: ${{ env.LINT_PRECOMMIT_ALLOW_FAILURE == 'true' && env.LINT_PRECOMMIT == 'true' || env.LINT_PRECOMMIT == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
+      LINT_PRECOMMIT_IMAGE: ${{ secrets.LINT_PRECOMMIT_IMAGE }}
+      LINT_PRECOMMIT_ALLOW_FAILURE: ${{ secrets.LINT_PRECOMMIT_ALLOW_FAILURE }}
+      LINT_PRECOMMIT: ${{ secrets.LINT_PRECOMMIT }}
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ secrets.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
       DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
       DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
+      LINT_DOCKER: true
+      LINT_VALE: true
       TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
+      DOCKER_TEST_VERSION_DIND: false
     steps:
     - uses: actions/checkout@v4.1.0
       with:
@@ -63,16 +69,19 @@ jobs:
     if: ${{ env.LINT_DOCKER_ALLOW_FAILURE == 'true' && env.LINT_DOCKER == 'true' || env.LINT_DOCKER == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
+      LINT_DOCKER_IMAGE: ${{ secrets.LINT_DOCKER_IMAGE }}
+      LINT_DOCKER_ALLOW_FAILURE: ${{ secrets.LINT_DOCKER_ALLOW_FAILURE }}
+      LINT_DOCKER: ${{ secrets.LINT_DOCKER }}
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ secrets.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
       DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
       DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
+      LINT_DOCKER: true
+      LINT_VALE: true
       TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
+      DOCKER_TEST_VERSION_DIND: false
     steps:
     - uses: actions/checkout@v4.1.0
       with:
@@ -88,16 +97,19 @@ jobs:
     if: ${{ env.LINT_LINK_ALLOW_FAILURE == 'true' && env.LINT_LINK == 'true' || env.LINT_LINK == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
+      LINT_LINK_IMAGE: ${{ secrets.LINT_LINK_IMAGE }}
+      LINT_LINK_ALLOW_FAILURE: ${{ secrets.LINT_LINK_ALLOW_FAILURE }}
+      LINT_LINK: ${{ secrets.LINT_LINK }}
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ secrets.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
       DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
       DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
+      LINT_DOCKER: true
+      LINT_VALE: true
       TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
+      DOCKER_TEST_VERSION_DIND: false
     steps:
     - uses: actions/checkout@v4.1.0
       with:
@@ -113,16 +125,19 @@ jobs:
     if: ${{ env.LINT_MARKDOWN_ALLOW_FAILURE == 'true' && env.LINT_MARKDOWN == 'true' || env.LINT_MARKDOWN == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
+      LINT_MARKDOWN_IMAGE: ${{ secrets.LINT_MARKDOWN_IMAGE }}
+      LINT_MARKDOWN_ALLOW_FAILURE: ${{ secrets.LINT_MARKDOWN_ALLOW_FAILURE }}
+      LINT_MARKDOWN: ${{ secrets.LINT_MARKDOWN }}
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ secrets.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
       DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
       DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
+      LINT_DOCKER: true
+      LINT_VALE: true
       TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
+      DOCKER_TEST_VERSION_DIND: false
     steps:
     - uses: actions/checkout@v4.1.0
       with:
@@ -137,16 +152,19 @@ jobs:
     if: ${{ env.LINT_SHELL_ALLOW_FAILURE == 'true' && env.LINT_SHELL == 'true' || env.LINT_SHELL == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
+      LINT_SHELL_IMAGE: ${{ secrets.LINT_SHELL_IMAGE }}
+      LINT_SHELL_ALLOW_FAILURE: ${{ secrets.LINT_SHELL_ALLOW_FAILURE }}
+      LINT_SHELL: ${{ secrets.LINT_SHELL }}
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ secrets.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
       DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
       DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
+      LINT_DOCKER: true
+      LINT_VALE: true
       TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
+      DOCKER_TEST_VERSION_DIND: false
     steps:
     - uses: actions/checkout@v4.1.0
       with:
@@ -162,16 +180,19 @@ jobs:
     if: ${{ !(env.LINT_VALE != 'true') || env.LINT_VALE_ALLOW_FAILURE == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
+      LINT_VALE_IMAGE: ${{ secrets.LINT_VALE_IMAGE }}
+      LINT_VALE_ALLOW_FAILURE: ${{ secrets.LINT_VALE_ALLOW_FAILURE }}
+      LINT_VALE: ${{ secrets.LINT_VALE }}
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ secrets.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
       DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
       DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
+      LINT_DOCKER: true
+      LINT_VALE: true
       TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
+      DOCKER_TEST_VERSION_DIND: false
     steps:
     - uses: actions/checkout@v4.1.0
       with:
@@ -188,16 +209,19 @@ jobs:
     if: ${{ env.LINT_YAML_ALLOW_FAILURE == 'true' && env.LINT_YAML == 'true' || env.LINT_YAML == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
+      LINT_YAML_IMAGE: ${{ secrets.LINT_YAML_IMAGE }}
+      LINT_YAML_ALLOW_FAILURE: ${{ secrets.LINT_YAML_ALLOW_FAILURE }}
+      LINT_YAML: ${{ secrets.LINT_YAML }}
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ secrets.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
       DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
       DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
+      LINT_DOCKER: true
+      LINT_VALE: true
       TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
+      DOCKER_TEST_VERSION_DIND: false
     steps:
     - uses: actions/checkout@v4.1.0
       with:
@@ -223,16 +247,27 @@ jobs:
       docker:
         image: docker:${{ env.DOCKER_SERVICE_DOCKER_TAG }} # Corrected variable syntax
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
+      DOCKER_IMAGE_FACTORY: ${{ secrets.DOCKER_IMAGE_FACTORY }}
+      DOCKER_SERVICE_DOCKER_TAG: ${{ secrets.DOCKER_SERVICE_DOCKER_TAG }}
+      DOCKER_BUILD_VERSION: ${{ secrets.DOCKER_BUILD_VERSION }}
+      CI_REGISTRY_IMAGE: ${{ secrets.CI_REGISTRY_IMAGE }}
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+      COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+      COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+      DOCKER_TASKFILE_DOCKER: ${{ secrets.DOCKER_TASKFILE_DOCKER }}
+      DOCKER_TASKFILE_SBOM: ${{ secrets.DOCKER_TASKFILE_SBOM }}
+      DOCKER_TASKFILE_VERSION: ${{ secrets.DOCKER_TASKFILE_VERSION }}
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ secrets.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
       DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
       DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
+      LINT_DOCKER: true
+      LINT_VALE: true
       TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
+      DOCKER_TEST_VERSION_DIND: false
       DOCKER_HOST: tcp://docker:2375
     steps:
     - uses: actions/checkout@v4.1.0
@@ -258,36 +293,4 @@ jobs:
       if: success()
       with:
         name: "${{ github.job }}"
-        retention-days: 7
-        path: image-digest.txt
-
-  sanity-test-get-manifest-version:
-    needs: docker-build
-    runs-on: ubuntu-latest
-    container:
-      image: ${{ env.DOCKER_IMAGE_FACTORY }} # Corrected variable syntax
-    timeout-minutes: 60
-    env:
-      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
-      DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
-      DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
-      DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
-      DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
-      DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
-      LINT_DOCKER: 'true'
-      LINT_VALE: 'true'
-      TASKFILE_VERSION: ".Taskfile-version.yml"
-      DOCKER_TEST_VERSION_DIND: 'false'
-    steps:
-    - uses: actions/checkout@v4.1.0
-      with:
-        fetch-depth: 20
-        lfs: true
-    - uses: actions/download-artifact@v4.1.3
-    - run: if [ ! -f "$DOCKER_TASKFILE_DOCKER" ]; then wget -q -O "$DOCKER_TASKFILE_DOCKER" https://gitlab.com/op_so/task/task-templates/-/raw/main/Taskfile.d/docker.yml; fi
-    - run: if [ ! -f "$DOCKER_TASKFILE_SBOM" ]; then wget -q -O "$DOCKER_TASKFILE_SBOM" https://gitlab.com/op_so/task/task-templates/-/raw/main/Taskfile.d/sbom.yml; fi
-    - run: if [ ! -f "$DOCKER_TASKFILE_VERSION" ]; then wget -q -O "$DOCKER_TASKFILE_VERSION" https://gitlab.com/op_so/task/task-templates/-/raw/main/Taskfile.d/version.yml; fi
-    - run: version_manifest=$(task --taskfile "$DOCKER_TASKFILE_VERSION" get-docker-manifest-version IMG="$DOCKER_REGISTRY_IMAGE_TAG")
-    - run: if [ -z "$version_manifest" ]; then printf "\033[0;31m[ERROR] Version manifest variable is empty!\033[0m\n" && exit 1; fi
-    - run: echo "Version from manifest -> $version_manifest <"
-    - run: echo "$version_manifest" > image-manifest-version.txt
+       
