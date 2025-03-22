@@ -1,4 +1,4 @@
-name: coolduderules1/wrangler
+name: coolduderules/wrangler
 on:
   push:
   workflow_dispatch: # Fixed trigger
