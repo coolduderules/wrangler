@@ -5,6 +5,7 @@ ARG VERSION
 
 # hadolint ignore=DL3016
 RUN npm install --global \
+    node@latest \
     wrangler@latest
 
 # hadolint ignore=DL3007
