@@ -1,7 +1,7 @@
 name: coolduderules1/wrangler
 on:
   push:
-  workflow_dispatch:
+  workflow_dispatch: # Fixed trigger
 concurrency:
   group: "${{ github.ref }}"
   cancel-in-progress: true
@@ -9,11 +9,11 @@ jobs:
   lint-file:
     runs-on: ubuntu-latest
     container:
-      image: "$LINT_FILE_IMAGE"
+      image: ${{ env.LINT_FILE_IMAGE }} # Corrected variable syntax
     if: ${{ env.LINT_FILE_ALLOW_FAILURE == 'true' && env.LINT_FILE == 'true' || env.LINT_FILE == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
@@ -29,16 +29,17 @@ jobs:
         fetch-depth: 20
         lfs: true
     - run: wget -q -O .Taskfile-lint.yml https://gitlab.com/op_so/task/task-templates/-/raw/main/Taskfile.d/lint.yml
-    - run: echo -en  "[safe]\n  directory = ${{ github.workspace }}\n" >> ~/.gitconfig
+    - run: echo -en "[safe]\n  directory = ${{ github.workspace }}\n" >> ~/.gitconfig
     - run: task --taskfile .Taskfile-lint.yml file
+
   lint-pre-commit:
     runs-on: ubuntu-latest
     container:
-      image: "$LINT_PRECOMMIT_IMAGE"
+      image: ${{ env.LINT_PRECOMMIT_IMAGE }} # Corrected variable syntax
     if: ${{ env.LINT_PRECOMMIT_ALLOW_FAILURE == 'true' && env.LINT_PRECOMMIT == 'true' || env.LINT_PRECOMMIT == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
@@ -54,14 +55,15 @@ jobs:
         fetch-depth: 20
         lfs: true
     - run: task --taskfile /lint.yml pre-commit DIR=$(pwd)
+
   lint-docker:
     runs-on: ubuntu-latest
     container:
-      image: "$LINT_DOCKER_IMAGE"
+      image: ${{ env.LINT_DOCKER_IMAGE }} # Corrected variable syntax
     if: ${{ env.LINT_DOCKER_ALLOW_FAILURE == 'true' && env.LINT_DOCKER == 'true' || env.LINT_DOCKER == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
@@ -77,15 +79,16 @@ jobs:
         fetch-depth: 20
         lfs: true
     - run: hadolint $LINT_DOCKER_FILE
+
   lint-link:
     runs-on: ubuntu-latest
     container:
-      image: "$LINT_LINK_IMAGE"
+      image: ${{ env.LINT_LINK_IMAGE }} # Corrected variable syntax
       options: "--entrypoint "
     if: ${{ env.LINT_LINK_ALLOW_FAILURE == 'true' && env.LINT_LINK == 'true' || env.LINT_LINK == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
@@ -101,15 +104,16 @@ jobs:
         fetch-depth: 20
         lfs: true
     - run: lychee .
+
   lint-markdown:
     runs-on: ubuntu-latest
     container:
-      image: "$LINT_MARKDOWN_IMAGE"
+      image: ${{ env.LINT_MARKDOWN_IMAGE }} # Corrected variable syntax
       options: "--entrypoint "
     if: ${{ env.LINT_MARKDOWN_ALLOW_FAILURE == 'true' && env.LINT_MARKDOWN == 'true' || env.LINT_MARKDOWN == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
@@ -125,14 +129,15 @@ jobs:
         fetch-depth: 20
         lfs: true
     - run: markdownlint-cli2 $LINT_MARKDOWN_GLOB
+
   lint-shell:
     runs-on: ubuntu-latest
     container:
-      image: "$LINT_SHELL_IMAGE"
+      image: ${{ env.LINT_SHELL_IMAGE }} # Corrected variable syntax
     if: ${{ env.LINT_SHELL_ALLOW_FAILURE == 'true' && env.LINT_SHELL == 'true' || env.LINT_SHELL == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
@@ -148,15 +153,16 @@ jobs:
         fetch-depth: 20
         lfs: true
     - run: shellcheck $LINT_SHELL_FILE
+
   lint-vale:
     runs-on: ubuntu-latest
     container:
-      image: "$LINT_VALE_IMAGE"
+      image: ${{ env.LINT_VALE_IMAGE }} # Corrected variable syntax
       options: "--entrypoint "
     if: ${{ !(env.LINT_VALE != 'true') || env.LINT_VALE_ALLOW_FAILURE == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
@@ -174,14 +180,15 @@ jobs:
     - run: mkdir -p $LINT_VALE_STYLES_DIR
     - run: "/bin/vale sync"
     - run: "/bin/vale $LINT_VALE_FILE"
+
   lint-yaml:
     runs-on: ubuntu-latest
     container:
-      image: "$LINT_YAML_IMAGE"
+      image: ${{ env.LINT_YAML_IMAGE }} # Corrected variable syntax
     if: ${{ env.LINT_YAML_ALLOW_FAILURE == 'true' && env.LINT_YAML == 'true' || env.LINT_YAML == 'true' }}
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
@@ -197,6 +204,7 @@ jobs:
         fetch-depth: 20
         lfs: true
     - run: yamllint .
+
   docker-build:
     needs:
     - lint-file
@@ -209,13 +217,13 @@ jobs:
     - lint-yaml
     runs-on: ubuntu-latest
     container:
-      image: "$DOCKER_IMAGE_FACTORY"
+      image: ${{ env.DOCKER_IMAGE_FACTORY }} # Corrected variable syntax
     timeout-minutes: 60
     services:
-      docker:$DOCKER_SERVICE_DOCKER_TAG:
-        image: docker:$DOCKER_SERVICE_DOCKER_TAG
+      docker:
+        image: docker:${{ env.DOCKER_SERVICE_DOCKER_TAG }} # Corrected variable syntax
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
       DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
       DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
@@ -237,7 +245,7 @@ jobs:
         - prerequisites-task
     - run: if [ -z "$DOCKER_BUILD_VERSION" ]; then printf "\033[0;31m[ERROR] DOCKER_BUILD_VERSION variable is empty!\033[0m\n" && exit 1; fi
     - run: printf "\033[0;32m[OK] DOCKER_BUILD_VERSION \"%s\". \033[0m\n" "$DOCKER_BUILD_VERSION"
-    - run: task --taskfile "$DOCKER_TASKFILE_DOCKER" build-push-multiarch DOCKER_USER="$CI_REGISTRY_USER" DOCKER_PASS="$CI_REGISTRY_PASSWORD" TAG="$DOCKER_REGISTRY_IMAGE_TAG" VERSION="$DOCKER_BUILD_VE[...]"
+    - run: task --taskfile "$DOCKER_TASKFILE_DOCKER" build-push-multiarch DOCKER_USER="$CI_REGISTRY_USER" DOCKER_PASS="$CI_REGISTRY_PASSWORD" TAG="$DOCKER_REGISTRY_IMAGE_TAG" VERSION="$DOCKER_BUILD_VERSION"
     - run: digest=$(task --taskfile "$DOCKER_TASKFILE_DOCKER" get-digest IMG="$DOCKER_REGISTRY_IMAGE_TAG")
     - run: echo "$digest" > image-digest.txt
     - run: echo -n "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
@@ -252,13 +260,34 @@ jobs:
         name: "${{ github.job }}"
         retention-days: 7
         path: image-digest.txt
+
   sanity-test-get-manifest-version:
     needs: docker-build
     runs-on: ubuntu-latest
     container:
-      image: "$DOCKER_IMAGE_FACTORY"
+      image: ${{ env.DOCKER_IMAGE_FACTORY }} # Corrected variable syntax
     timeout-minutes: 60
     env:
-      DOCKER_REGISTRY_IMAGE_TAG: "$CI_REGISTRY_IMAGE/${{ github.ref }}:${{ github.sha }}"
+      DOCKER_REGISTRY_IMAGE_TAG: ${{ env.CI_REGISTRY_IMAGE }}/${{ github.ref }}:${{ github.sha }}
       DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
-      DOCKER_DOCKERHUB_RM
+      DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
+      DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
+      DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
+      DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
+      LINT_DOCKER: 'true'
+      LINT_VALE: 'true'
+      TASKFILE_VERSION: ".Taskfile-version.yml"
+      DOCKER_TEST_VERSION_DIND: 'false'
+    steps:
+    - uses: actions/checkout@v4.1.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - uses: actions/download-artifact@v4.1.0
+    - run: if [ ! -f "$DOCKER_TASKFILE_DOCKER" ]; then wget -q -O "$DOCKER_TASKFILE_DOCKER" https://gitlab.com/op_so/task/task-templates/-/raw/main/Taskfile.d/docker.yml; fi
+    - run: if [ ! -f "$DOCKER_TASKFILE_SBOM" ]; then wget -q -O "$DOCKER_TASKFILE_SBOM" https://gitlab.com/op_so/task/task-templates/-/raw/main/Taskfile.d/sbom.yml; fi
+    - run: if [ ! -f "$DOCKER_TASKFILE_VERSION" ]; then wget -q -O "$DOCKER_TASKFILE_VERSION" https://gitlab.com/op_so/task/task-templates/-/raw/main/Taskfile.d/version.yml; fi
+    - run: version_manifest=$(task --taskfile "$DOCKER_TASKFILE_VERSION" get-docker-manifest-version IMG="$DOCKER_REGISTRY_IMAGE_TAG")
+    - run: if [ -z "$version_manifest" ]; then printf "\033[0;31m[ERROR] Version manifest variable is empty!\033[0m\n" && exit 1; fi
+    - run: echo "Version from manifest -> $version_manifest <"
+    - run: echo "$version_manifest" > image-manifest-version.txt
