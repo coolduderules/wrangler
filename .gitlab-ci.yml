@@ -1,0 +1,49 @@
+---
+include:
+  - remote: 'https://gitlab.com/op_so/projects/gitlab-ci-templates/-/raw/main/templates/lint.gitlab-ci.yml'
+  - remote: 'https://gitlab.com/op_so/projects/gitlab-ci-templates/-/raw/main/templates/image-factory.gitlab-ci.yml'
+
+variables:
+  DOCKER_REGISTRY_IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHORT_SHA
+  DOCKER_DOCKERHUB_IMAGE_REPOSITORY: index.docker.io/jfxs/wrangler
+  DOCKER_DOCKERHUB_RM_URL: jfxs/wrangler
+  DOCKER_QUAY_IMAGE_REPOSITORY: quay.io/ifxs/wrangler
+  DOCKER_QUAY_RM_URL: quay.io/ifxs/wrangler
+  DOCKER_SBOM_SUBSET: "^ca-certificates |^curl |^git |^github.com/go-task/task/v3 |^node |^npm |^wrangler "
+  LINT_DOCKER: "true"
+  LINT_VALE: "true"
+  TASKFILE_VERSION: .Taskfile-version.yml
+  DOCKER_TEST_VERSION_DIND: "false"
+
+stages:
+  - lint
+  - build-image
+  - test-image
+  - trigger-publish-image
+  - publish-image
+
+docker:build:
+  before_script:
+    - if [ ! -f "$TASKFILE_VERSION" ]; then wget -q -O "$TASKFILE_VERSION" https://gitlab.com/op_so/task/task-templates/-/raw/main/Taskfile.d/version.yml; fi
+    - W_VERSION=$(task --taskfile "$TASKFILE_VERSION" get-latest-npm PACKAGE=wrangler)
+    - echo "Wrangler version >${W_VERSION}<"
+    - DOCKER_BUILD_VERSION=$W_VERSION
+
+sanity-test:amd64:
+  image: $DOCKER_REGISTRY_IMAGE_TAG
+  stage: test-image
+  script:
+    - node --version
+    - npx wrangler --version
+    - task --version
+
+sanity-test:arm64:
+  extends: sanity-test:amd64
+  tags:
+    - arm64
+
+sanity-test:version-not-dind:
+  script:
+    - version_cli=$(npx wrangler --version)
+    - echo "Version from cli -> $version_cli <"
+    - if [ "$DOCKER_MANIFEST_VERSION" = "$version_cli" ]; then printf "\033[0;32m[OK]\033[0m Versions from CLI and manifest are equal > %s <-> %s <\n" "$DOCKER_MANIFEST_VERSION" "$version_cli"; else printf "\033[0;31m[FAILED] Versions from CLI and manifest are different > %s <-> %s <\n" "$DOCKER_MANIFEST_VERSION" "$version_cli" && exit 1; fi

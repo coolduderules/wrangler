@@ -1,0 +1,13 @@
+{
+  "name": "docker-wrangler",
+  "version": "0.0.0-wrangler",
+  "description": "docker-wrangler",
+  "engines": {
+    "node": ">=18.0",
+    "yarn": ">=1.20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ttps://gitlab.com/coolduderules1/wrangler.git"
+  },
+}

@@ -1,0 +1,11 @@
+---
+extends: default
+
+ignore: |
+  .cache/
+  styles/
+  Taskfile.d/
+  Taskfile.yml
+
+rules:
+  line-length: disable

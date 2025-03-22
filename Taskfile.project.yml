@@ -1,0 +1,76 @@
+---
+# https://taskfile.dev
+#
+# Taskfile.project.yml for your main project tasks. Must be commited.
+# If you always want the last version of the task templates, add the following line in your .gitignore file
+# /Taskfile.d/
+#
+version: '3'
+
+vars:
+  # TO MODIFY: Task templates to download separated by comma
+  # Example: TASK_TEMPLATES: go,lint,yarn
+  TASK_TEMPLATES: docker,git,lint,version
+  # Proxy URL can be configure bellow or as an argument of 00-install-templates
+  DEFAULT_TAG: wrangler
+
+tasks:
+
+  00-get-list-templates:
+    # Get the list of templates to download
+    # Do not remove
+    cmds:
+      - echo "{{.TASK_TEMPLATES}}"
+    silent: true
+
+  10-build-local:
+    desc: "[PROJECT] Build an image locally. Arguments: [TAG|T=image:tag] [VCS_REF|C=110f273aad1cc] [FILE|F=<Dockerfile_path>] (*)"
+    summary: |
+      [PROJECT] Build an image locally.
+      Usage: task 00:10-build-local [TAG|T=<image[:tag]>] [VCS_REF|C=<commit_sha>] [FILE|F=<Dockerfile_path>]
+
+      Arguments:
+       TAG     | T  Tag of the image (optional)
+       VCS_REF | C  Commit revision SHA hash (optional, by default NO_REF)
+       FILE    | F  Dockerfile path (optional, by default Dockerfile)
+
+      Nota:
+        Get last version with: task version:get-latest-github R=semantic-release/semantic-release
+      Requirements:
+        - docker
+    vars:
+      TAG: '{{.TAG | default .T | default .DEFAULT_TAG}}'
+      VCS_REF: '{{.VCS_REF | default .C | default "NO_REF"}}'
+      W_VERSION:
+        sh: task version:get-latest-npm PACKAGE=wrangler
+      FILE: '{{.FILE | default .F | default "Dockerfile"}}'
+    cmds:
+      - task docker:build-local TAG="{{.TAG}}" VERSION="{{.W_VERSION}}" VCS_REF="{{.VCS_REF}}" FILE="{{.FILE}}"
+    silent: true
+
+  30-test:
+    desc: "[PROJECT] Test an image locally. Arguments: [TAG|T=image:tag] (*)"
+    summary: |
+      [PROJECT] Test an image locally.
+      Usage: task 00:30-test-local [TAG|T=<image[:tag]>]
+
+      Arguments:
+       TAG     | T  Tag of the image (optional)
+    vars:
+      TAG: '{{.TAG | default .T | default .DEFAULT_TAG}}'
+    cmds:
+      - docker run -t --rm {{.TAG}} /bin/sh -c "node --version"
+      - docker run -t --rm {{.TAG}} /bin/sh -c "npx wrangler --version"
+      - docker run -t --rm {{.TAG}} /bin/sh -c "task --version"
+    silent: true
+
+  40-pre-commit:
+    desc: "[PROJECT] Pre-commit checks."
+    cmds:
+      - date > {{.FILE_TASK_START}}
+      - defer: rm -f {{.FILE_TASK_START}}
+      - task lint:pre-commit
+      - task lint:all MEX='"#styles" "#Taskfile.d" "#.cache"'
+      - task lint:docker
+      - echo "" && echo "Checks Start $(cat {{.FILE_TASK_START}}) - End $(date)"
+    silent: true

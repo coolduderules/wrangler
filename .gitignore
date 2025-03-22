@@ -1,0 +1,5 @@
+/.cache/
+/.vscode/
+/styles/
+/Taskfile.d/
+.DS_Store
